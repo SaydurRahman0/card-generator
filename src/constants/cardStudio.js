@@ -6,29 +6,80 @@ export const CARD_SIZES = {
   '9:16': { width: 1080, height: 1920 },
 }
 
-export const CARD_STYLES = [
-  { id: 'modern', name: 'Modern', description: 'Bold and balanced' },
-  { id: 'minimal', name: 'Minimal', description: 'Clean and precise' },
-  { id: 'gradient', name: 'Gradient', description: 'Polished depth' },
-  { id: 'elegant', name: 'Elegant', description: 'Formal and refined' },
-  { id: 'glass', name: 'Glass', description: 'Soft translucency' },
+export const DEFAULT_SIZE = '16:9'
+
+export const CARD_TEMPLATES = [
+  { id: 'atelier', name: 'Atelier', nameBn: 'অ্যাটেলিয়ার', description: 'Premium minimal', descriptionBn: 'মিনিমাল প্রিমিয়াম', tone: 'light' },
+  { id: 'noir', name: 'Noir Luxe', nameBn: 'নোয়ার লাক্স', description: 'Luxury gold', descriptionBn: 'বিলাসবহুল গোল্ড', tone: 'dark' },
+  { id: 'prism', name: 'Prism', nameBn: 'প্রিজম', description: 'Modern gradient', descriptionBn: 'আধুনিক গ্রেডিয়েন্ট', tone: 'dark' },
+  { id: 'registry', name: 'Registry', nameBn: 'রেজিস্ট্রি', description: 'Professional ID', descriptionBn: 'পেশাদার আইডি', tone: 'light' },
+  { id: 'kinetic', name: 'Kinetic', nameBn: 'কাইনেটিক', description: 'Creative abstract', descriptionBn: 'সৃজনশীল অ্যাবস্ট্রাক্ট', tone: 'dark' },
+  { id: 'editorial', name: 'Editorial', nameBn: 'এডিটোরিয়াল', description: 'Magazine layout', descriptionBn: 'ম্যাগাজিন লেআউট', tone: 'light' },
+  { id: 'aurora', name: 'Aurora', nameBn: 'অরোরা', description: 'Glass modern', descriptionBn: 'গ্লাস মডার্ন', tone: 'dark' },
 ]
 
-export const DEFAULT_COLORS = {
-  primary: '#1d2d54',
-  secondary: '#3f5fa5',
-  accent: '#79a9ff',
-  background: '#eff3fb',
-  text: '#ffffff',
-}
+export const DEFAULT_TEMPLATE = 'atelier'
 
 export const COLOR_PALETTES = [
-  { name: 'Midnight', colors: { primary: '#14213d', secondary: '#315a85', accent: '#a8c8ff', background: '#edf3fb', text: '#ffffff' } },
-  { name: 'Royal Purple', colors: { primary: '#2f245b', secondary: '#6d50a1', accent: '#c2a8ff', background: '#f1edfa', text: '#ffffff' } },
-  { name: 'Ocean', colors: { primary: '#123047', secondary: '#1b7a84', accent: '#67d8d0', background: '#edf8f7', text: '#ffffff' } },
-  { name: 'Emerald', colors: { primary: '#12382f', secondary: '#1d7659', accent: '#77d5ad', background: '#edf7f2', text: '#ffffff' } },
-  { name: 'Crimson', colors: { primary: '#54262d', secondary: '#a74448', accent: '#f2a0a1', background: '#faf1f0', text: '#fffaf5' } },
-  { name: 'Black & Gold', colors: { primary: '#171717', secondary: '#5d4a25', accent: '#d3b15f', background: '#f5efe2', text: '#fdf8e9' } },
-  { name: 'Clean White', colors: { primary: '#ffffff', secondary: '#dde5ef', accent: '#4c72b8', background: '#f7f9fc', text: '#1c2740' } },
-  { name: 'Sunset', colors: { primary: '#7b3b2a', secondary: '#c75d45', accent: '#f2a675', background: '#fff4e9', text: '#fffaf4' } },
+  {
+    id: 'midnight',
+    name: 'Midnight Blue',
+    nameBn: 'মিডনাইট ব্লু',
+    colors: { primary: '#141f38', secondary: '#2c4a7c', accent: '#a6c6ff', background: '#eef3fa', text: '#f7fbff' },
+  },
+  {
+    id: 'royal',
+    name: 'Royal Purple',
+    nameBn: 'রয়েল পার্পল',
+    colors: { primary: '#2a2050', secondary: '#6a4fa0', accent: '#c9b2ff', background: '#f4f0fa', text: '#fdfbff' },
+  },
+  {
+    id: 'emerald',
+    name: 'Emerald',
+    nameBn: 'এমারেল্ড',
+    colors: { primary: '#103a30', secondary: '#1c6a53', accent: '#8fd8b8', background: '#f1f7f2', text: '#f6fffa' },
+  },
+  {
+    id: 'ocean',
+    name: 'Ocean',
+    nameBn: 'ওশান',
+    colors: { primary: '#0e2f45', secondary: '#176b78', accent: '#78d6d4', background: '#eef7f7', text: '#f4ffff' },
+  },
+  {
+    id: 'crimson',
+    name: 'Crimson',
+    nameBn: 'ক্রিমসন',
+    colors: { primary: '#4a1f26', secondary: '#8f3b3f', accent: '#e9b3a4', background: '#f8efec', text: '#fff5ef' },
+  },
+  {
+    id: 'black-gold',
+    name: 'Black & Gold',
+    nameBn: 'ব্ল্যাক অ্যান্ড গোল্ড',
+    colors: { primary: '#131313', secondary: '#5a4a2a', accent: '#c9a24a', background: '#f6f1e8', text: '#f4e8ce' },
+  },
+  {
+    id: 'premium-white',
+    name: 'Premium White',
+    nameBn: 'প্রিমিয়াম হোয়াইট',
+    colors: { primary: '#2b3346', secondary: '#b5a58a', accent: '#a37f45', background: '#faf8f3', text: '#f8f4ea' },
+  },
+  {
+    id: 'sunset',
+    name: 'Sunset',
+    nameBn: 'সানসেট',
+    colors: { primary: '#4a2325', secondary: '#a94a3e', accent: '#f0aa78', background: '#fdf1e6', text: '#fff8f0' },
+  },
 ]
+
+export const DEFAULT_COLORS = COLOR_PALETTES[0].colors
+
+export const DEFAULT_LABEL_LANGUAGE = 'en'
+export const DEFAULT_NUMBER_LANGUAGE = 'en'
+
+export const NUMBER_FORMATS = [
+  { id: 'en', sample: '0123456789' },
+  { id: 'bn', sample: '০১২৩৪৫৬৭৮৯' },
+]
+
+export const MAX_PIXELS = 10000
+export const MIN_PIXELS = 100

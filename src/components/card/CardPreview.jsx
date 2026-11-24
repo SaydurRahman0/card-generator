@@ -1,28 +1,56 @@
+import { memo, useLayoutEffect, useRef } from 'react'
 import GeneratedCard from './GeneratedCard'
 
-export default function CardPreview({ form, style, colors, width, height, exportRef, exportMode = false }) {
-  const valid = Number(width) >= 100 && Number(height) >= 100
+const CANVAS_WIDTH = 1200
+
+const CardPreview = memo(function CardPreview({ card, templateId, colors, width, height, ui }) {
+  const frameRef = useRef(null)
+  const canvasRef = useRef(null)
+  const numericWidth = Number(width) || 1920
+  const numericHeight = Number(height) || 1080
+  const valid = numericWidth >= 100 && numericHeight >= 100
+  const safeWidth = valid ? numericWidth : 1920
+  const safeHeight = valid ? numericHeight : 1080
+  const ratio = safeWidth / safeHeight
+
+  useLayoutEffect(() => {
+    const frame = frameRef.current
+    const canvas = canvasRef.current
+    if (!frame || !canvas) return
+    const update = () => {
+      canvas.style.transform = `scale(${frame.clientWidth / CANVAS_WIDTH})`
+    }
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(frame)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div className="preview-wrap">
       <div className="preview-meta">
-        <span>Live preview</span>
-        <strong>{valid ? `${width} × ${height} px` : 'Invalid size'}</strong>
+        <span>{ui.livePreview}</span>
+        <strong>{valid ? `${width} × ${height} px` : ui.setSize}</strong>
       </div>
       <div className="preview-stage">
-        <div
-          className="preview-frame"
-          style={{ aspectRatio: `${valid ? width : 16} / ${valid ? height : 9}` }}
-        >
-          <GeneratedCard
-            form={form}
-            style={style}
-            colors={colors}
-            width={valid ? width : 1920}
-            height={valid ? height : 1080}
-            cardRef={exportMode ? exportRef : undefined}
-          />
+        <div ref={frameRef} className="preview-frame" style={{ '--ratio': String(ratio) }}>
+          <div
+            ref={canvasRef}
+            className="preview-canvas"
+            style={{ width: `${CANVAS_WIDTH}px`, height: `${CANVAS_WIDTH / ratio}px` }}
+          >
+            <GeneratedCard
+              card={card}
+              templateId={templateId}
+              colors={colors}
+              width={safeWidth}
+              height={safeHeight}
+            />
+          </div>
         </div>
       </div>
     </div>
   )
-}
+})
+
+export default CardPreview

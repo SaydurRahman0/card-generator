@@ -8,19 +8,19 @@ function CardIcon() {
   )
 }
 
-export default function Header({ onReset }) {
+export default function Header({ onReset, ui }) {
   return (
     <header className="studio-header">
       <div className="studio-brand">
         <div className="brand-mark"><CardIcon /></div>
         <div>
-          <h1>Card Studio</h1>
-          <p>Create personalized cards in seconds</p>
+          <h1>{ui.appName}</h1>
+          <p>{ui.tagline}</p>
         </div>
       </div>
       <div className="header-actions">
-        <span className="privacy-chip"><i /> Local & private</span>
-        <button type="button" className="reset-link" onClick={onReset}>Reset form</button>
+        <span className="privacy-chip"><i /> {ui.privacyChip}</span>
+        <button type="button" className="reset-link" onClick={onReset}>{ui.reset}</button>
       </div>
     </header>
   )

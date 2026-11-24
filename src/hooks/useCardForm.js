@@ -1,4 +1,8 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
+import { readPhoto } from '../utils/image'
+
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+const MAX_SIZE = 8 * 1024 * 1024
 
 export const INITIAL_FORM = {
   organization: '',
@@ -16,55 +20,51 @@ export function useCardForm() {
   const [errors, setErrors] = useState({})
   const [photoError, setPhotoError] = useState('')
 
-  const updateField = (event) => {
+  const updateField = useCallback((event) => {
     const { name, value } = event.target
-    setForm((current) => ({ ...current, [name]: value }))
-    if (errors[name]) setErrors((current) => ({ ...current, [name]: '' }))
-  }
+    setForm((current) => (current[name] === value ? current : { ...current, [name]: value }))
+    setErrors((current) => (current[name] ? { ...current, [name]: '' } : current))
+  }, [])
 
-  const updatePhoto = (file, remove = false) => {
+  const updatePhoto = useCallback(async (file, remove = false) => {
     if (remove) {
       setForm((current) => ({ ...current, photo: '' }))
       setPhotoError('')
       return
     }
     if (!file) return
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-      setPhotoError('Choose a JPG, PNG, or WebP image.')
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setPhotoError('badType')
       return
     }
-    if (file.size > 8 * 1024 * 1024) {
-      setPhotoError('Choose an image smaller than 8 MB.')
+    if (file.size > MAX_SIZE) {
+      setPhotoError('tooLarge')
       return
     }
 
-    const reader = new FileReader()
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        setForm((current) => ({ ...current, photo: reader.result }))
-      }
-    }
-    reader.onerror = () => {
-      setPhotoError('This image could not be opened. Please choose another one.')
-    }
     setPhotoError('')
-    reader.readAsDataURL(file)
-  }
+    try {
+      const dataUrl = await readPhoto(file)
+      if (dataUrl) setForm((current) => ({ ...current, photo: dataUrl }))
+    } catch {
+      setPhotoError('unreadable')
+    }
+  }, [])
 
-  const validate = () => {
+  const validate = useCallback(() => {
     const nextErrors = {}
-    if (!form.organization.trim()) nextErrors.organization = 'Organization name is required'
-    if (!form.cardTitle.trim()) nextErrors.cardTitle = 'Card title is required'
-    if (!form.fullName.trim()) nextErrors.fullName = 'Full name is required'
+    if (!form.organization.trim()) nextErrors.organization = 'organizationRequired'
+    if (!form.cardTitle.trim()) nextErrors.cardTitle = 'cardTitleRequired'
+    if (!form.fullName.trim()) nextErrors.fullName = 'fullNameRequired'
     setErrors(nextErrors)
     return Object.keys(nextErrors).length === 0
-  }
+  }, [form.organization, form.cardTitle, form.fullName])
 
-  const reset = () => {
+  const reset = useCallback(() => {
     setForm(INITIAL_FORM)
     setErrors({})
     setPhotoError('')
-  }
+  }, [])
 
   return { form, errors, photoError, updateField, updatePhoto, validate, reset }
 }

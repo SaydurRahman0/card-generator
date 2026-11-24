@@ -1,13 +1,34 @@
+import { memo } from 'react'
 import Input from '../ui/Input'
 
-export default function OrganizationFields({ form, errors, onChange }) {
+function OrganizationFields({ form, errors, onChange, title, fields, errorTexts }) {
   return (
     <>
-      <div className="form-section-title"><span>Organization</span></div>
+      <div className="form-section-title"><span>{title}</span></div>
       <div className="form-grid">
-        <Input label="Organization / Foundation Name" name="organization" value={form.organization} onChange={onChange} error={errors.organization} required placeholder="Enter organization name" />
-        <Input label="Card Title / Card Type" name="cardTitle" value={form.cardTitle} onChange={onChange} error={errors.cardTitle} required placeholder="Blood Donor Card" />
+        <Input
+          label={fields.organization.label}
+          name="organization"
+          value={form.organization}
+          onChange={onChange}
+          error={errors.organization ? errorTexts[errors.organization] : ''}
+          required
+          placeholder={fields.organization.placeholder}
+          enterKeyHint="next"
+        />
+        <Input
+          label={fields.cardTitle.label}
+          name="cardTitle"
+          value={form.cardTitle}
+          onChange={onChange}
+          error={errors.cardTitle ? errorTexts[errors.cardTitle] : ''}
+          required
+          placeholder={fields.cardTitle.placeholder}
+          enterKeyHint="next"
+        />
       </div>
     </>
   )
 }
+
+export default memo(OrganizationFields)
